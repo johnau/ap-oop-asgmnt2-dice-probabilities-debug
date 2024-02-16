@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DiceProbabilitiesDebug")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93b5afd772d251c7c9b68b2758744ea84299d7f4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db0f6e1efedeed8b620c9721f6ec4a6ae87aaf12")]
 [assembly: System.Reflection.AssemblyProductAttribute("DiceProbabilitiesDebug")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DiceProbabilitiesDebug")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
