@@ -5,16 +5,19 @@ Console.WriteLine("Hello, World!");
 
 var result_1 = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(1);
 var result_2 = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(2);
-var result_3 = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(3);
+var result_3 = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(4);
 //var result_14 = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(14);
 //var result_845 = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(845);
 
 Console.WriteLine("\n \n Calculate probabilities for 1 die \n \n ");
-var check_1 = DiceProbabilities.CalculateProbabilitiesForNumberOfDice(1);
+var d1 = new DiceProbabilities(1);
+var check_1 = d1.CalculateProbabilitiesForNumberOfDice();
 Console.WriteLine("\n \n Calculate probabilities for 2 dice \n \n ");
-var check_2 = DiceProbabilities.CalculateProbabilitiesForNumberOfDice(2);
-Console.WriteLine("\n \n Calculate probabilities for 2 dice \n \n ");
-var check_3 = DiceProbabilities.CalculateProbabilitiesForNumberOfDice(3);
+var d2 = new DiceProbabilities(2);
+var check_2 = d2.CalculateProbabilitiesForNumberOfDice();
+Console.WriteLine("\n \n Calculate probabilities for 3 dice \n \n ");
+var d3 = new DiceProbabilities(4);
+var check_3 = d3.CalculateProbabilitiesForNumberOfDice();
 
 if (!result_1.SequenceEqual(check_1))
 {
