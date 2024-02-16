@@ -7,14 +7,14 @@ public static class DiceProbabilities
 {
     public static Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice(int n)
     {
-        Dictionary<int, int> rollCalculations = new Dictionary<int, int>(); 
+        Dictionary<int, int> rollCombinations = new Dictionary<int, int>(); 
         // int mn = n; // replace mn in code with n
         int mx = n * 6;
         for (int i = n; i <= mx; i++) // populate dict with keys from number of dice to number of dice times the sides (6)
         {
-            rollCalculations[i] = 0;
+            rollCombinations[i] = 0;
         }
-        Log(rollCalculations, "RC");
+        Log(rollCombinations, "Combinations", 2);
         
         int[] dice = new int[n]; // new array sized at number of dice.
         for (int i = 0; i < n; i++)
@@ -34,13 +34,13 @@ public static class DiceProbabilities
             int total = dice.Sum();
             Console.WriteLine($"\n\tCurrent: {total}");
 
-            rollCalculations[total] += 1;
+            rollCombinations[total] += 1;
 
             int i = 0;
             bool finished2 = false;
             while (!finished2)
             {
-                Log(dice, "Dice", 2);
+                Log(dice, "Dice value", 2);
                 dice[i] += 1;
 
                 if (dice[i] <= 6)
@@ -53,17 +53,18 @@ public static class DiceProbabilities
                     {
                         finished1 = true;
                         finished2 = true;
+                        Console.WriteLine($"\t    <XX> i={i}, n={n}");
                     }
                     else
                     {
                         dice[i] = 1;
-                        Console.WriteLine($"\t\tM<reset dice[{i}]=1>");
+                        Console.WriteLine($"\t    <reset dice[{i}]=1>");
                     }
                 }
                 i++;
             }
-            Log(rollCalculations, "RC", 2);
-            Log(dice, "Dice", 2);
+            Log(rollCombinations, "Combinations", 2);
+            Log(dice, "Dice value", 2);
         }
 
         Dictionary<int, Double> rollProbabilities = new Dictionary<int, double>();
@@ -72,10 +73,10 @@ public static class DiceProbabilities
         Console.WriteLine($"Process RollCalc dictionary for {n} dice (from {n} to {mx}) into roll probablities dict");
         for (int i = n; i <= mx; i++)
         {
-            Console.WriteLine($"Roll calc [{i}]={rollCalculations[i]}");
-            Console.WriteLine($"Roll divided by Total combinations = {(Double)rollCalculations[i] / total2}");
-            rollProbabilities[i] = (Double)rollCalculations[i] / total2;
-            Console.WriteLine($"Roll probability for [{i}] = {(Double)rollCalculations[i] / total2}");
+            Console.WriteLine($"Roll calc [{i}]={rollCombinations[i]}");
+            Console.WriteLine($"Roll divided by Total combinations = {(Double)rollCombinations[i] / total2}");
+            rollProbabilities[i] = (Double)rollCombinations[i] / total2;
+            Console.WriteLine($"Roll probability for [{i}] = {(Double)rollCombinations[i] / total2}");
         }
         return rollProbabilities;
     }
