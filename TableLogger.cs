@@ -1,13 +1,9 @@
-﻿using System.ComponentModel;
-using System.Drawing;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿namespace DiceProbabilitiesDebug;
 
-namespace DiceProbabilitiesDebug;
-
-internal class TableLogger
+public class TableLogger
 {
-    public string[] _headers = [];
-    public List<ResultRow> _results = [];
+    private string[] _headers = [];
+    private List<ResultRow> _results = [];
     
     public TableLogger()
     {
