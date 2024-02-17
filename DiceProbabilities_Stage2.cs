@@ -34,20 +34,23 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces = 6) // This c
     
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
-        var probabilities = new Dictionary<int, double>();
+        //var probabilities = new Dictionary<int, double>();
 
         var combinations = CalculateCombinations();
+
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
+        return combinations.ToDictionary(kv => kv.Key, kv => (double)kv.Value / totalCombinations);
+
         //return CalculateProbabilities(combinations);
-        for (int i = numberOfDice; i <= numberOfDice * 6; i++)
-        {
-            Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
-            probabilities[i] = (Double)combinations[i] / totalCombinations;
-            Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations * 100:F2}%");
-        }
-        return probabilities;
+        //for (int i = numberOfDice; i <= numberOfDice * 6; i++)
+        //{
+        //    Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+        //    probabilities[i] = (Double)combinations[i] / totalCombinations;
+        //    Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations * 100:F2}%");
+        //}
+        //return probabilities;
     }
 
     protected (int[] dice, Dictionary<int, int> combinations) SetupArrays()

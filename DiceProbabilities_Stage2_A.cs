@@ -17,6 +17,8 @@ public class DiceProbabilities_Stage2_A(int numberOfDice, int faces = 6) : DiceP
         //while (!finished1) // this keeps going until the die are all spent (ie , 2 die => 6, 6, 3 die => 6, 6, 6)
         combinations[numberOfDice] = 1;
         int total = dice.Sum();
+        RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
+
         while (total != faces * numberOfDice)  // loop til max value
         {
             //// dice starts at 1 and then increments at end of each loop, each loop is the next increment of face value

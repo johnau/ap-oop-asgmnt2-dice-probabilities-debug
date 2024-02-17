@@ -16,6 +16,8 @@ public class DiceProbabilities_Stage2_C(int numberOfDice, int faces = 6) : DiceP
         // the intial value in the combinations dict will always be 1
         combinations[numberOfDice] = 1;
         int total = dice.Sum();
+        RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
+
         while (dice.Sum() != faces * numberOfDice)
         {
             if (dice[0] == faces)

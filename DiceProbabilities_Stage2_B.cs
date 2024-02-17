@@ -15,6 +15,8 @@ public class DiceProbabilities_Stage2_B(int numberOfDice, int faces = 6) : DiceP
 
         combinations[numberOfDice] = 1;
         int total = dice.Sum();
+        RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
+
         int d = 0;
         while (total != faces * numberOfDice)
         {

@@ -9,8 +9,9 @@ public class DiceProbabilities_Stage2_D(int numberOfDice, int faces = 6) : DiceP
 
         Log(dice, "XX Dice", 1, false);
         combinations[numberOfDice] = 1; // set initial value to 1, could also set maxValue to 1 and flip the contents of the while loop?
-
         var total = dice.Sum();
+        RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
+
         while (total != faces * numberOfDice)
         {
             for (int i = 0; i < numberOfDice; i++)
