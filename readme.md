@@ -1,5 +1,16 @@
 # C# OOP Assignment 2: Dice Probabilities Debug
 
+## Steps Taken
+- Consolidation of variables
+- Log output
+- Comments
+- Tabulated output / visualisation
+- Breakdown of processes
+- Refactoring
+- Testing
+- Alternatives
+
+## Pretty Table printer
 
 Tabulated output of combinations dictionary:
 
@@ -10,3 +21,5 @@ End of table:
 ![End of Pretty Table](https://github.com/johnau/ap-oop-asgmnt2-dice-probabilities-debug/blob/master/3_dice_table_output2.png?raw=true)
 
 Displaying a clear visualization of probabilities and relationship to the total combination count (shown as row number)
+
+-------------------
