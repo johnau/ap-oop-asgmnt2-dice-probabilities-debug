@@ -31,6 +31,7 @@ internal class TableLogger
         DrawHorizontalBorder(_);
 
         var maxValue = _results.Last().Results.Max();
+        var intervalSize = (double)maxValue / 13;
 
         for (int i = 0; i < _results.Count; i++) 
         {
@@ -43,9 +44,15 @@ internal class TableLogger
             for (int j = 0; j < row.Results.Length; j++)
             {
                 var r = row.Results[j];
-                var intervalSize = (double)maxValue / 13;
-                var color = (int)Math.Ceiling(r / intervalSize);
-                color = ColorMap(Math.Max(1, Math.Min(color, 13)));
+                int color;
+                if (r == maxValue)
+                {
+                    color = (int) ConsoleColor.White;
+                } else
+                {
+                    color = (int)Math.Ceiling(r / intervalSize);
+                    color = ColorMap(Math.Max(1, Math.Min(color, 13))); // map the color value to a better color value for the resultant visualization
+                }
 
                 Console.ForegroundColor = (ConsoleColor) color;
                 Console.Write($"{row.Results[j],3} ");
