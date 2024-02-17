@@ -57,7 +57,7 @@ public class TableLogger
             DrawHorizontalBorder(_);
         }
 
-        DrawHeader(_);
+        DrawHeader(_, false, true);
     }
 
     private static void DrawHorizontalBorder(int length, bool spaceBefore = true)
@@ -75,15 +75,16 @@ public class TableLogger
         Console.ResetColor();
     }
 
-    private void DrawHeader(int length)
+    private void DrawHeader(int length, bool topBorder = true, bool bottomBorder = true)
     {
+        if (topBorder) DrawHorizontalBorder(length);
         Console.ForegroundColor = ConsoleColor.DarkGray;
         Console.Write("|" + new string(' ', 13) + "|");
         for (int i = 0; i < _headers.Length; i++)
         {
             Console.Write($"{_headers[i],3} |");
         }
-        DrawHorizontalBorder(length);
+        if (bottomBorder) DrawHorizontalBorder(length);
         Console.ResetColor();
     }
 
