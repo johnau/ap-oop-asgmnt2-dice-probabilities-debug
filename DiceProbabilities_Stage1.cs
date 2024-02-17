@@ -14,13 +14,22 @@ public class DiceProbabilities_Stage1(int numberOfDice)
 
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
+        var probabilities = new Dictionary<int, double>();
+        var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
+
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
         var combinations = CalculateCombinations(dice);
-
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
-        return CalculateProbabilities(combinations);
+        //return CalculateProbabilities(combinations);
+        for (int i = numberOfDice; i <= numberOfDice * 6; i++)
+        {
+            Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+            probabilities[i] = (Double)combinations[i] / totalCombinations;
+            Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations * 100:F2}%");
+        }
+        return probabilities;
     }
 
     private Dictionary<int, int> CalculateCombinations(int[] dice)
@@ -76,19 +85,19 @@ public class DiceProbabilities_Stage1(int numberOfDice)
         return combinations;
     }
 
-    private Dictionary<int, Double> CalculateProbabilities(Dictionary<int, int> combinations)
-    {
-        var probabilities = new Dictionary<int, double>();
-        var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
+    //private Dictionary<int, Double> CalculateProbabilities(Dictionary<int, int> combinations)
+    //{
+    //    var probabilities = new Dictionary<int, double>();
+    //    var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
 
-        for (int i = numberOfDice; i <= numberOfDice*6; i++)
-        {
-            Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
-            probabilities[i] = (Double)combinations[i] / totalCombinations;
-            Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations*100:F2}%");
-        }
-        return probabilities;
-    }
+    //    for (int i = numberOfDice; i <= numberOfDice*6; i++)
+    //    {
+    //        Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+    //        probabilities[i] = (Double)combinations[i] / totalCombinations;
+    //        Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations*100:F2}%");
+    //    }
+    //    return probabilities;
+    //}
 
     private static void Log(Dictionary<int, int> dict, string name = "A", int indent = 0)
     {
