@@ -22,9 +22,8 @@ public class TableLogger
     public void Log()
     {
         var _ = _headers.Length * 5 + 15;
-        DrawHorizontalBorder(_);
-        DrawHeader();
-        DrawHorizontalBorder(_);
+        
+        DrawHeader(_);
 
         var maxValue = _results.Last().Results.Max();
         var intervalSize = (double)maxValue / 13;
@@ -57,12 +56,15 @@ public class TableLogger
             }
             DrawHorizontalBorder(_);
         }
+
+        DrawHeader(_);
     }
 
-    private static void DrawHorizontalBorder(int length)
+    private static void DrawHorizontalBorder(int length, bool spaceBefore = true)
     {
+        var nl = spaceBefore ? "\n" : "";
         Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.WriteLine("\n" + new string('-', length));
+        Console.WriteLine($"{nl}{new string('-', length)}");
         Console.ResetColor();
     }
 
@@ -73,7 +75,7 @@ public class TableLogger
         Console.ResetColor();
     }
 
-    private void DrawHeader()
+    private void DrawHeader(int length)
     {
         Console.ForegroundColor = ConsoleColor.DarkGray;
         Console.Write("|" + new string(' ', 13) + "|");
@@ -81,6 +83,7 @@ public class TableLogger
         {
             Console.Write($"{_headers[i],3} |");
         }
+        DrawHorizontalBorder(length);
         Console.ResetColor();
     }
 

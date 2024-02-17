@@ -32,32 +32,28 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces = 6) // This c
     protected readonly int faces = faces;
     protected readonly int totalCombinations = (int)Math.Pow(faces, numberOfDice);
     
-    public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
+    public virtual Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
     {
-        //var probabilities = new Dictionary<int, double>();
+        var probabilities = new Dictionary<int, double>();
 
         var combinations = CalculateCombinations();
-
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
-        return combinations.ToDictionary(kv => kv.Key, kv => (double)kv.Value / totalCombinations);
-
         //return CalculateProbabilities(combinations);
-        //for (int i = numberOfDice; i <= numberOfDice * 6; i++)
-        //{
-        //    Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
-        //    probabilities[i] = (Double)combinations[i] / totalCombinations;
-        //    Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations * 100:F2}%");
-        //}
-        //return probabilities;
+        for (int i = numberOfDice; i <= numberOfDice * faces; i++)
+        {
+            Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+            probabilities[i] = (Double)combinations[i] / totalCombinations;
+            Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations * 100:F2}%");
+        }
+        return probabilities;
     }
 
     protected (int[] dice, Dictionary<int, int> combinations) SetupArrays()
     {
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
         var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
-        Log(combinations, "Combos");
         RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
 
         return (dice, combinations);
