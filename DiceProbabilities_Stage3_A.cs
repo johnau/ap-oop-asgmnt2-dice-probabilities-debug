@@ -2,7 +2,6 @@
 
 public class DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6) : DiceProbabilities_Stage2(numberOfDice, faces)
 {
-
     public override Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
     {
         var combinations = CalculateCombinations();
