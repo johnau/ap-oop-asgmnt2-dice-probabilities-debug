@@ -21,6 +21,8 @@
 
 Tabulated output of combinations dictionary:
 
+https://github.com/johnau/ap-oop-asgmnt2-dice-probabilities-debug/assets/13730422/9e354538-47fa-42bc-adff-370f116e8e7b
+
 Start of table:
 ![Start of Pretty Table](https://github.com/johnau/ap-oop-asgmnt2-dice-probabilities-debug/blob/master/images/3_dice_table_output1.png?raw=true)
 
