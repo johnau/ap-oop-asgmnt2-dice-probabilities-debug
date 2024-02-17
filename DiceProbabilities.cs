@@ -6,43 +6,45 @@ public class DiceProbabilities(int numberOfDice)
 
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
-        var rollCombinations = Enumerable.Range(numberOfDice, numberOfDice * 6- numberOfDice + 1).ToDictionary(key => key, value => 0);
-        Log(rollCombinations, "Combos");
-        RcLog.SetHeaders(rollCombinations.Keys.Select(k => k.ToString()).ToArray());
+        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6- numberOfDice + 1).ToDictionary(key => key, value => 0);
+        Log(combinations, "Combos");
+        RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
 
-        CalculateCombinations(dice, ref rollCombinations);
+        CalculateCombinations(dice, ref combinations);
 
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
-        return CalculateProbabilities(numberOfDice, rollCombinations);
+        return CalculateProbabilities(numberOfDice, combinations);
     }
 
-    private void CalculateCombinations(int[] dice, ref Dictionary<int, int> rollCombinations)
+    private void CalculateCombinations(int[] dice, ref Dictionary<int, int> combinations)
     {
         bool finished1 = false;
-        while (!finished1)
+        while (!finished1) // this keeps going until the die are all spent (ie , 2 die => 6, 6, 3 die => 6, 6, 6)
         {
-            int total = dice.Sum();
+            Log(dice, "Dice value", 3, false); // starts with all 1's
+            int total = dice.Sum();             // starts with smallest atainable value
             Console.WriteLine($"\t[Value={total}]");
 
-            rollCombinations[total] += 1;
+            combinations[total] += 1;       // add 1 more possible roll that will sum to the total value
 
             int i = 0;
             bool finished2 = false;
+
+            // This while loop iterates over each die, and tries each combination of values,eg. 3 dice ->  (1, 1, 1), (2, 1, 1), (3, 1, 1) ..... (5, 6, 6), (6, 6, 6)
+            // Each of the combinations is summed to its total value (1, 1, 1) => 3
             while (!finished2)
             {
-                Log(dice, "Dice value", 3, false);
                 dice[i] += 1;
-
-                if (dice[i] <= 6)
+                if (dice[i] <= 6) // inner loop does not get entered until all sides run out
                 {
                     finished2 = true;
                 }
                 else
                 {
-                    if (i == numberOfDice - 1)
+                    if (i == numberOfDice - 1) // both loops exit when the last die has exceeded 6
                     {
                         finished1 = true;
                         finished2 = true;
@@ -56,8 +58,9 @@ public class DiceProbabilities(int numberOfDice)
                 }
                 i++;
             }
+
             //Log(rollCombinations, "Combinations", 2);
-            RcLog.AddResultRow(total, rollCombinations.Values.Select(v => v).ToArray());
+            RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
             //Log(dice, "Dice value", 2);
         }
     }
