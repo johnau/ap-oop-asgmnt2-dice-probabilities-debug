@@ -15,21 +15,14 @@ namespace DiceProbabilitiesDebug;
 /// 
 /// </summary>
 /// <param name="numberOfDice"></param>
-public class DiceProbabilities_Stage2(int numberOfDice)
+public class DiceProbabilities_Stage2(int numberOfDice, int faces)
 {
     private readonly TableLogger RcLog = new();
+    private readonly int numberOfDice = numberOfDice;
+    private readonly int faces = faces;
 
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
-        //var totalCombinations = (int) Math.Pow(6, numberOfDice);
-        //for (int i = 1; i <= totalCombinations; i++)
-        //{
-        //    Debug.WriteLine($"Loop #{i}");
-
-        //}
-        //return null;
-
-
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
         var combinations = CalculateCombinations(dice);
 

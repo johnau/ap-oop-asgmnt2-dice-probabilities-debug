@@ -20,7 +20,7 @@ public class DiceProbabilities_Stage1(int numberOfDice)
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
-        return CalculateProbabilities(numberOfDice, combinations);
+        return CalculateProbabilities(combinations);
     }
 
     private Dictionary<int, int> CalculateCombinations(int[] dice)
@@ -76,16 +76,16 @@ public class DiceProbabilities_Stage1(int numberOfDice)
         return combinations;
     }
 
-    private Dictionary<int, Double> CalculateProbabilities(int n, Dictionary<int, int> rollCombinations)
+    private Dictionary<int, Double> CalculateProbabilities(Dictionary<int, int> combinations)
     {
         var probabilities = new Dictionary<int, double>();
-        var totalCombinations = Math.Pow(6.0, (Double)n);
+        var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
 
-        for (int i = n; i <= n*6; i++)
+        for (int i = numberOfDice; i <= numberOfDice*6; i++)
         {
-            Console.WriteLine($"Combinations for value {i} = ({rollCombinations[i]} of {totalCombinations})");
-            probabilities[i] = (Double)rollCombinations[i] / totalCombinations;
-            Console.WriteLine($"% [{i}] = {(Double)rollCombinations[i] / totalCombinations*100:F2}%");
+            Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+            probabilities[i] = (Double)combinations[i] / totalCombinations;
+            Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations*100:F2}%");
         }
         return probabilities;
     }
