@@ -6,12 +6,8 @@ public class DiceProbabilities(int numberOfDice)
 
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
-        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6- numberOfDice + 1).ToDictionary(key => key, value => 0);
-        Log(combinations, "Combos");
-        RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-
-        CalculateCombinations(dice, ref combinations);
+        var combinations = CalculateCombinations(dice);
 
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
@@ -19,8 +15,12 @@ public class DiceProbabilities(int numberOfDice)
         return CalculateProbabilities(numberOfDice, combinations);
     }
 
-    private void CalculateCombinations(int[] dice, ref Dictionary<int, int> combinations)
+    private Dictionary<int, int> CalculateCombinations(int[] dice)
     {
+        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
+        Log(combinations, "Combos");
+        RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
+
         bool finished1 = false;
         while (!finished1) // this keeps going until the die are all spent (ie , 2 die => 6, 6, 3 die => 6, 6, 6)
         {
@@ -63,6 +63,8 @@ public class DiceProbabilities(int numberOfDice)
             RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
             //Log(dice, "Dice value", 2);
         }
+
+        return combinations;
     }
 
     private Dictionary<int, Double> CalculateProbabilities(int n, Dictionary<int, int> rollCombinations)

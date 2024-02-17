@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using DiceProbabilitiesDebug;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Dice Probabilities");
 
 for (int i = 1; i <= 4; i++)
 {
