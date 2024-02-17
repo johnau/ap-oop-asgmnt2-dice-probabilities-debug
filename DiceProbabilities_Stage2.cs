@@ -3,19 +3,22 @@
 namespace DiceProbabilitiesDebug;
 
 /// <summary>
-/// This first stage involved renaming + simple refactoring (no drastic changes to code structure)
+/// Stage 1 (other class)
+/// ----------------------------------
+/// This first stage has involved renaming + simple refactoring (no drastic changes to code structure)
 /// At this point, after being able to clearly visualize what is happening (through the 'pretty' table logger), some refactoring is required (see Stage_2)
 /// 1. Combinations are calculated by looping over number of dice AND number of faces
 /// 2. Each combinations count is divided by the total number of possible combinations (which is 6^number of dice, 
 ///     ie, 1 die: 6^1=6 possible results, 2 die: 6^2=36 posible results), therefor there should be as many loop iterations
 ///     
-/// 
-/// Stage 2 - Refactoring
+/// Stage 2 (this class)
+/// ----------------------------------
+/// This stage will involve refactoring that will change the current code structure.
 /// 
 /// 
 /// </summary>
 /// <param name="numberOfDice"></param>
-public class DiceProbabilities_Stage2(int numberOfDice, int faces)
+public class DiceProbabilities_Stage2(int numberOfDice, int faces = 6)
 {
     private readonly TableLogger RcLog = new();
     private readonly int numberOfDice = numberOfDice;
@@ -23,13 +26,34 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces)
 
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
-        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        var combinations = CalculateCombinations(dice);
+        var probabilities = new Dictionary<int, double>();
+        //var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
+        int totalCombinations = (int)Math.Pow(faces, numberOfDice);
 
+        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
+
+        var face = 1;
+        for (int i = numberOfDice; i <= totalCombinations; i++)
+        {
+            Debug.WriteLine($"Loop #{i}");
+
+            // reset or increment face
+            if (i % faces == 0) face = 1;
+            else face++;
+        }
+
+        var combinations = CalculateCombinations(dice);
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
-        return CalculateProbabilities(numberOfDice, combinations);
+        //return CalculateProbabilities(combinations);
+        for (int i = numberOfDice; i <= numberOfDice * 6; i++)
+        {
+            Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+            probabilities[i] = (Double)combinations[i] / totalCombinations;
+            Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations * 100:F2}%");
+        }
+        return probabilities;
     }
 
     private Dictionary<int, int> CalculateCombinations(int[] dice)
@@ -42,7 +66,7 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces)
         while (!finished1) // this keeps going until the die are all spent (ie , 2 die => 6, 6, 3 die => 6, 6, 6)
         {
             // dice starts at 1 and then increments at end of each loop, each loop is the next increment of face value
-            Log(dice, "Dice value", 3, false); 
+            Log(dice, "Dice value", 3, false);
             int total = dice.Sum();
             Console.WriteLine($"\t[Value={total}]");
 
@@ -77,27 +101,27 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces)
                 i++;
             }
 
-            //Log(rollCombinations, "Combinations", 2);
             RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
+            //Log(rollCombinations, "Combinations", 2);
             //Log(dice, "Dice value", 2);
         }
 
         return combinations;
     }
 
-    private Dictionary<int, Double> CalculateProbabilities(int n, Dictionary<int, int> rollCombinations)
-    {
-        var probabilities = new Dictionary<int, double>();
-        var totalCombinations = Math.Pow(6.0, (Double)n);
+    //private Dictionary<int, Double> CalculateProbabilities(Dictionary<int, int> combinations)
+    //{
+    //    var probabilities = new Dictionary<int, double>();
+    //    var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
 
-        for (int i = n; i <= n*6; i++)
-        {
-            Console.WriteLine($"Combinations for value {i} = ({rollCombinations[i]} of {totalCombinations})");
-            probabilities[i] = (Double)rollCombinations[i] / totalCombinations;
-            Console.WriteLine($"% [{i}] = {(Double)rollCombinations[i] / totalCombinations*100:F2}%");
-        }
-        return probabilities;
-    }
+    //    for (int i = numberOfDice; i <= numberOfDice*6; i++)
+    //    {
+    //        Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
+    //        probabilities[i] = (Double)combinations[i] / totalCombinations;
+    //        Console.WriteLine($"% [{i}] = {(Double)combinations[i] / totalCombinations*100:F2}%");
+    //    }
+    //    return probabilities;
+    //}
 
     private static void Log(Dictionary<int, int> dict, string name = "A", int indent = 0)
     {
@@ -112,7 +136,7 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces)
     private static void Log(int[] arr, string name = "A", int indent = 0, bool includeHeaders = true)
     {
         var _indent = string.Concat(Enumerable.Repeat("\t", indent));
-        var s = string.Join("\t", arr.Select((value, index) => $"D{index+1}"));
+        var s = string.Join("\t", arr.Select((value, index) => $"D{index + 1}"));
         var s1 = string.Join("\t", arr.Select((value, index) => $"{value}"));
         Console.Write($"{_indent}{name} arr: ");
         if (includeHeaders) Console.WriteLine($"{_indent}[{s}]");

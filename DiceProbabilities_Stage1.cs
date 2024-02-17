@@ -77,8 +77,8 @@ public class DiceProbabilities_Stage1(int numberOfDice)
                 i++;
             }
 
-            //Log(rollCombinations, "Combinations", 2);
             RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
+            //Log(rollCombinations, "Combinations", 2);
             //Log(dice, "Dice value", 2);
         }
 

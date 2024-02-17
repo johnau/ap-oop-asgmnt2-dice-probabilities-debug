@@ -25,7 +25,7 @@ internal class TableLogger
 
     public void Log()
     {
-        var _ = _headers.Length * 5 + 14;
+        var _ = _headers.Length * 5 + 15;
         DrawHorizontalBorder(_);
         DrawHeader();
         DrawHorizontalBorder(_);
@@ -38,7 +38,7 @@ internal class TableLogger
             var row = _results[i];
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write($"#{i+1,3}: {row.Key,3} >> |");
+            Console.Write($"#{i+1,4}: {row.Key,3} >> |");
             Console.ResetColor();
             
             for (int j = 0; j < row.Results.Length; j++)
@@ -85,7 +85,6 @@ internal class TableLogger
         {
             Console.Write($"{_headers[i],3} |");
         }
-        Console.Write("\n");
         Console.ResetColor();
     }
 
