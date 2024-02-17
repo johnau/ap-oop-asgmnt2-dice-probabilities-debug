@@ -17,8 +17,8 @@ public class DiceProbabilities_Stage1(int numberOfDice)
         var probabilities = new Dictionary<int, double>();
         var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
 
-        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        var combinations = CalculateCombinations(dice);
+
+        var combinations = CalculateCombinations();
         Console.WriteLine($"{numberOfDice} dice combinations:");
         RcLog.Log();
 
@@ -32,8 +32,9 @@ public class DiceProbabilities_Stage1(int numberOfDice)
         return probabilities;
     }
 
-    private Dictionary<int, int> CalculateCombinations(int[] dice)
+    private Dictionary<int, int> CalculateCombinations()
     {
+        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
         var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
         Log(combinations, "Combos");
         RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());

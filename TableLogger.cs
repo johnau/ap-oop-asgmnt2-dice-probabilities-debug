@@ -38,7 +38,7 @@ internal class TableLogger
             var row = _results[i];
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write($"#{i+1,4}: {row.Key,3} >> |");
+            Console.Write($"|#{i+1,4}: {row.Key,3} >>|");
             Console.ResetColor();
             
             for (int j = 0; j < row.Results.Length; j++)
@@ -80,7 +80,7 @@ internal class TableLogger
     private void DrawHeader()
     {
         Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write("|" + new string(' ', 12) + "|");
+        Console.Write("|" + new string(' ', 13) + "|");
         for (int i = 0; i < _headers.Length; i++)
         {
             Console.Write($"{_headers[i],3} |");
@@ -110,8 +110,8 @@ internal class TableLogger
         //    DarkGreen = 2,
         //    DarkBlue = 1,
         //    Blue = 9,
-        //    Magenta = 13,
         //    DarkMagenta = 5,
+        //    Magenta = 13,
         //    Red = 12,
         //    DarkRed = 4,
 
@@ -124,8 +124,8 @@ internal class TableLogger
         if (color == 7) return 2;
         if (color == 8) return 1;
         if (color == 9) return 9;
-        if (color == 10) return 13;
-        if (color == 11) return 5;
+        if (color == 10) return 5;
+        if (color == 11) return 13;
         if (color == 12) return 12;
         if (color == 13) return 4;
 
