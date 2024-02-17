@@ -8,7 +8,7 @@ for (int i = 1; i <= 4; i++)
     var result_Original = DiceProbabilitiesOriginal.calculateProbabilitiesForNumberOfDice(i);
 
     Console.WriteLine($"\n \n Calculate probabilities for {i} die \n \n ");
-    var d = new DiceProbabilities(i);
+    var d = new DiceProbabilities_Stage1(i);
     var result_Edited = d.CalculateProbabilitiesForNumberOfDice();
 
     if (!result_Original.SequenceEqual(result_Edited))

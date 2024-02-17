@@ -1,6 +1,14 @@
 ﻿namespace DiceProbabilitiesDebug;
 
-public class DiceProbabilities(int numberOfDice)
+/// <summary>
+/// This first stage has involved renaming + simple refactoring (no drastic changes to code structure)
+/// At this point, after being able to clearly visualize what is happening (through the 'pretty' table logger), some refactoring is required (see Stage_2)
+/// 1. Combinations are calculated by looping over number of dice AND number of faces
+/// 2. Each combinations count is divided by the total number of possible combinations (which is 6^number of dice, 
+///     ie, 1 die: 6^1=6 possible results, 2 die: 6^2=36 posible results), therefor there should be as many loop iterations
+/// </summary>
+/// <param name="numberOfDice"></param>
+public class DiceProbabilities_Stage1(int numberOfDice)
 {
     private readonly TableLogger RcLog = new();
 
@@ -24,8 +32,9 @@ public class DiceProbabilities(int numberOfDice)
         bool finished1 = false;
         while (!finished1) // this keeps going until the die are all spent (ie , 2 die => 6, 6, 3 die => 6, 6, 6)
         {
-            Log(dice, "Dice value", 3, false); // starts with all 1's
-            int total = dice.Sum();             // starts with smallest atainable value
+            // dice starts at 1 and then increments at end of each loop, each loop is the next increment of face value
+            Log(dice, "Dice value", 3, false); 
+            int total = dice.Sum();
             Console.WriteLine($"\t[Value={total}]");
 
             combinations[total] += 1;       // add 1 more possible roll that will sum to the total value
@@ -52,7 +61,7 @@ public class DiceProbabilities(int numberOfDice)
                     }
                     else
                     {
-                        dice[i] = 1;
+                        dice[i] = 1; // dice is reset each time to increment the next
                         //Console.WriteLine($"\t    <reset dice[{i}]=1>");
                     }
                 }
