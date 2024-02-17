@@ -10,6 +10,13 @@
 - Testing
 - Alternatives
 
+## Files
+- `DiceProbabilitiesOriginal`: static class with original assignment code
+- `DiceProbabilities_Stage1`: class object with logged and commented code.
+- `DiceProbabilities_Stage2`: class object with refactored code.
+- `DiceProbabilities_Stage2_A` to `E`: class objects extend `DiceProbabilities_Stage2` and override `CalculateCombinations()` and other methods with further refactored versions
+- `DiceProbabilities_Stage3`: class object extends `DiceProbabilities_Stage2` for alternative configuration
+
 ## Pretty Table printer
 
 Tabulated output of combinations dictionary:
