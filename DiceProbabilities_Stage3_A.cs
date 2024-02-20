@@ -1,56 +1,56 @@
 ﻿namespace DiceProbabilitiesDebug;
 
-public class DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6) : DiceProbabilities_Stage2(numberOfDice, faces)
+/// <summary>
+/// Stage 3A
+/// Integrating the dice and combinations collections into the mix
+/// </summary>
+/// <param name="numberOfDice"></param>
+/// <param name="faces"></param>
+public class DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6)
 {
-    public override Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
-    {
-        var combinations = CalculateCombinations();
-        return combinations.ToDictionary(kv => kv.Key, kv => (double)kv.Value / totalCombinations);
-    }
+    protected readonly TableLogger RcLog = new();
+    protected readonly int numberOfDice = numberOfDice;
+    protected readonly int faces = faces;
+    protected readonly int totalCombinations = (int)Math.Pow(faces, numberOfDice);
 
-    protected override Dictionary<int, int> CalculateCombinations()
+    public Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
     {
-        (var dice, var combinations) = SetupArrays();
+        var probabilities = new Dictionary<int, double>();
+        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
+        //var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0); // remove this loop and integrate to the main loops
+        var combinations = Enumerable.Repeat(0, numberOfDice * 6).ToArray();
 
-        bool finished1 = false;
-        while (!finished1) // this keeps going until the die are all spent (ie , 2 die => 6, 6, 3 die => 6, 6, 6)
+        for (int rollValue = numberOfDice; rollValue <= numberOfDice * 6; rollValue++)
         {
-            int total = dice.Sum();
-        
-            Console.Write($"\t[Value={total}]");
-            Log(dice, "Dice value", 1, false);
+            var total = dice.Sum();
+            combinations[total] += 1;
+            RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
 
-            combinations[total] += 1;       // add 1 more possible roll that will sum to the total value
-
-            int i = 0;
-            bool finished2 = false;
-
-            while (!finished2)
+            while (total < numberOfDice * faces)
             {
-                dice[i] += 1;
-                if (dice[i] <= 6) // inner loop does not get entered until all sides run out
+                for (int i = 0; i < numberOfDice; i++)
                 {
-                    finished2 = true;
-                }
-                else
-                {
-                    if (i == numberOfDice - 1) // both loops exit when the last die has exceeded 6
+                    if (dice[i] == faces)
                     {
-                        finished1 = true;
-                        finished2 = true;
+                        dice[i] = 1;
                     }
                     else
                     {
-                        dice[i] = 1; // dice is reset each time to increment the next
+                        dice[i]++;
+                        break;
                     }
                 }
-                i++;
+                total = dice.Sum();
+                combinations[total]++;
+                RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
             }
-
-            RcLog.AddResultRow(total, combinations.Values.Select(v => v).ToArray());
         }
 
-        return combinations;
+        return probabilities;
+        //return combinations.ToDictionary(
+        //    combo => combo.Key,
+        //    combo => (double)combo.Value / totalCombinations
+        //);
     }
 
 }

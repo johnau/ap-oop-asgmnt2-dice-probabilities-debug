@@ -1,37 +1,47 @@
 ﻿namespace DiceProbabilitiesDebug;
 
-public class DiceProbabilities_Stage2_E(int numberOfDice, int faces = 6) : DiceProbabilities_Stage2(numberOfDice, faces)
+public class DiceProbabilities_Stage2_E(int numberOfDice, int faces = 6) // This constructor style is weird for a full class
 {
+    protected readonly int numberOfDice = numberOfDice;
+    protected readonly int faces = faces;
+    protected readonly int totalCombinations = (int)Math.Pow(faces, numberOfDice);
 
-    public override Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
+    public virtual Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
     {
-        var combinations = CalculateCombinations();
-        return combinations.ToDictionary(kv => kv.Key, kv => (double)kv.Value / totalCombinations);
-    }
+        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
+        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
 
-    protected override Dictionary<int, int> CalculateCombinations()
-    {
-        (var dice, var combinations) = SetupArrays();
         combinations[numberOfDice] = 1; // set initial value to 1, could also set maxValue to 1 and flip the contents of the while loop?
-        var total = dice.Sum();
-        while (total != faces * numberOfDice)
+        var total = numberOfDice;
+        while (total < numberOfDice * faces)
         {
-            for (int i = 0; i < numberOfDice; i++)
+            for (int d = 0; d < numberOfDice; d++)
             {
-                if (dice[i] == faces)
+                if (dice[d] == faces)
                 {
-                    dice[i] = 1;
+                    dice[d] = 1;
                 }
                 else
                 {
-                    dice[i]++;
+                    dice[d]++;
                     break;
                 }
             }
             total = dice.Sum();
             combinations[total]++;
         }
-        return combinations;
+
+        return combinations.ToDictionary(
+            combo => combo.Key, 
+            combo => (double) combo.Value / totalCombinations
+        );
+
+        //var probabilities = new Dictionary<int, double>();
+        //for (int i = numberOfDice; i <= numberOfDice * faces; i++)
+        //{
+        //    probabilities[i] = (Double)combinations[i] / totalCombinations;
+        //}
+        //return probabilities;
     }
 
 }

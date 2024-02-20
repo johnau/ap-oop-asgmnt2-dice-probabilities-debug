@@ -53,7 +53,7 @@ public class DiceProbabilities_Stage2(int numberOfDice, int faces = 6) // This c
     protected (int[] dice, Dictionary<int, int> combinations) SetupArrays()
     {
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
+        var combinations = Enumerable.Range(numberOfDice, numberOfDice * faces - numberOfDice + 1).ToDictionary(key => key, value => 0);
         RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
 
         return (dice, combinations);

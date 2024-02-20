@@ -57,7 +57,7 @@ public class DiceProbabilities_Stage1(int numberOfDice)
             while (!finished2)
             {
                 dice[i] += 1;
-                if (dice[i] <= 6) // inner loop does not get entered until all sides run out
+                if (dice[i] <= 6) // inner loop does not get entered until all sides run out (exceeded 6)
                 {
                     finished2 = true;
                 }
