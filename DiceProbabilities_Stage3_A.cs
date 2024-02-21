@@ -1,4 +1,6 @@
-﻿namespace DiceProbabilitiesDebug;
+﻿using System.Diagnostics;
+
+namespace DiceProbabilitiesDebug;
 
 /// <summary>
 /// Stage 3A
@@ -22,28 +24,32 @@ public class DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6)
 
         for (int rollValue = numberOfDice; rollValue <= numberOfDice * 6; rollValue++)
         {
-            var total = dice.Sum();
-            combinations[total] += 1;
-            RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
+            Console.Write(rollValue + ": ");
+            var combos = CalculateCombinations(rollValue);
+            Console.Write(combos + "\n");
 
-            while (total < numberOfDice * faces)
-            {
-                for (int i = 0; i < numberOfDice; i++)
-                {
-                    if (dice[i] == faces)
-                    {
-                        dice[i] = 1;
-                    }
-                    else
-                    {
-                        dice[i]++;
-                        break;
-                    }
-                }
-                total = dice.Sum();
-                combinations[total]++;
-                RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
-            }
+            //var total = dice.Sum();
+            //combinations[total] += 1;
+            //RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
+
+            //while (total < numberOfDice * faces)
+            //{
+            //    for (int i = 0; i < numberOfDice; i++)
+            //    {
+            //        if (dice[i] == faces)
+            //        {
+            //            dice[i] = 1;
+            //        }
+            //        else
+            //        {
+            //            dice[i]++;
+            //            break;
+            //        }
+            //    }
+            //    total = dice.Sum();
+            //    combinations[total]++;
+            //    RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
+            //}
         }
 
         return probabilities;
@@ -52,5 +58,45 @@ public class DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6)
         //    combo => (double)combo.Value / totalCombinations
         //);
     }
+
+    public int CalculateCombinations(int targetValue)
+    {
+        var totalCombinations = 0;
+        // loop each die
+        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
+        var currentTotal = 0;
+        var cFace = 1;
+        //for (int f = 1; f <= faces; f++)
+        //{
+        while (currentTotal < totalCombinations)
+        {
+            for (int i = numberOfDice; i >= 0; i--)
+            {
+                dice[i] += 1;
+
+            }
+        }
+            
+
+        if (currentTotal == targetValue)
+        {
+            totalCombinations++;
+        }
+        //}
+        
+        return totalCombinations;
+    }
+
+    //public int RecurisveCalculation(int targetValue, int diceIndex, int runningTotal)
+    //{
+    //    // establish base case (no more dice left)
+    //    if (diceIndex == 0)
+    //    {
+    //        return runningTotal; // Return the current accumulated total of combinations
+    //    }
+
+        
+
+    //}
 
 }
