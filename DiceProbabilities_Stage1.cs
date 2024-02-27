@@ -8,14 +8,14 @@
 ///     ie, 1 die: 6^1=6 possible results, 2 die: 6^2=36 posible results), therefor there should be as many loop iterations
 /// </summary>
 /// <param name="numberOfDice"></param>
-public class DiceProbabilities_Stage1(int numberOfDice)
+public class DiceProbabilities_Stage1(int numberOfDice, int faces = 6)
 {
     private readonly TableLogger RcLog = new();
 
     public Dictionary<int, Double> CalculateProbabilitiesForNumberOfDice()
     {
         var probabilities = new Dictionary<int, double>();
-        var totalCombinations = Math.Pow(6.0, (Double)numberOfDice);
+        var totalCombinations = Math.Pow(faces, (Double)numberOfDice);
 
 
         var combinations = CalculateCombinations();
@@ -23,7 +23,7 @@ public class DiceProbabilities_Stage1(int numberOfDice)
         RcLog.Log();
 
         //return CalculateProbabilities(combinations);
-        for (int i = numberOfDice; i <= numberOfDice * 6; i++)
+        for (int i = numberOfDice; i <= numberOfDice * faces; i++)
         {
             Console.WriteLine($"Combinations for value {i} = ({combinations[i]} of {totalCombinations})");
             probabilities[i] = (Double)combinations[i] / totalCombinations;
@@ -35,7 +35,7 @@ public class DiceProbabilities_Stage1(int numberOfDice)
     private Dictionary<int, int> CalculateCombinations()
     {
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
+        var combinations = Enumerable.Range(numberOfDice, numberOfDice * faces - numberOfDice + 1).ToDictionary(key => key, value => 0);
         Log(combinations, "Combos");
         RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
 

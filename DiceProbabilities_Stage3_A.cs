@@ -1,102 +1,61 @@
-﻿using System.Diagnostics;
-
-namespace DiceProbabilitiesDebug;
+﻿namespace DiceProbabilitiesDebug;
 
 /// <summary>
-/// Stage 3A
-/// Integrating the dice and combinations collections into the mix
+/// Stage 3A - Incorporating the dice and combinations populating arrays
+/// This has ended up looking very inefficient based on the output => a lot of unneccessary processing (0 dice, 0 target value)
+/// Need to dig a little deeper, but not sure if it is worth it, the other solutions are OK.
+/// 
 /// </summary>
 /// <param name="numberOfDice"></param>
 /// <param name="faces"></param>
-public class DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6)
+public class DiceProbabilities_Stage3_A
 {
     protected readonly TableLogger RcLog = new();
-    protected readonly int numberOfDice = numberOfDice;
-    protected readonly int faces = faces;
-    protected readonly int totalCombinations = (int)Math.Pow(faces, numberOfDice);
+    protected readonly int numberOfDice;
+    protected readonly int faces;
+    protected readonly int totalCombinations;
+
+    public DiceProbabilities_Stage3_A(int numberOfDice, int faces = 6)
+    {
+        this.numberOfDice = numberOfDice;
+        this.faces = faces;
+        totalCombinations = (int)Math.Pow(faces, numberOfDice);
+    }
 
     public Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
     {
         var probabilities = new Dictionary<int, double>();
-        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        //var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0); // remove this loop and integrate to the main loops
-        var combinations = Enumerable.Repeat(0, numberOfDice * 6).ToArray();
-
-        for (int rollValue = numberOfDice; rollValue <= numberOfDice * 6; rollValue++)
+        var die = numberOfDice;
+        for (int targetValue = numberOfDice; targetValue <= numberOfDice * faces; targetValue++)
         {
-            Console.Write(rollValue + ": ");
-            var combos = CalculateCombinations(rollValue);
-            Console.Write(combos + "\n");
+            var probabilities_array = new double[die + 1, targetValue + 1]; // define results array (+1 to avoid 0 indexes and confusion)
 
-            //var total = dice.Sum();
-            //combinations[total] += 1;
-            //RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
+            // Quick solve for 1 die (avoid hitting array twice)
+            for (int i = 1; i <= faces && i <= targetValue; i++)
+            {
+                probabilities_array[1, i] = 1.0 / faces;
+            }
 
-            //while (total < numberOfDice * faces)
-            //{
-            //    for (int i = 0; i < numberOfDice; i++)
-            //    {
-            //        if (dice[i] == faces)
-            //        {
-            //            dice[i] = 1;
-            //        }
-            //        else
-            //        {
-            //            dice[i]++;
-            //            break;
-            //        }
-            //    }
-            //    total = dice.Sum();
-            //    combinations[total]++;
-            //    RcLog.AddResultRow(total, combinations.Select(v => v).ToArray());
-            //}
+            // Solve 2+ dice
+            for (int total = 1; total <= targetValue; total++)
+            {
+                for (int d = 2; d <= die; d++) 
+                {
+                    for (int value = 1; value <= faces && value < total; value++)
+                    {
+                        probabilities_array[d, total] += probabilities_array[d - 1, total - value] / faces;
+                    }
+                    Console.WriteLine($"{probabilities_array[d, total]}");
+                }
+            }
+
+            probabilities.Add(targetValue, probabilities_array[numberOfDice, targetValue]);
         }
 
         return probabilities;
-        //return combinations.ToDictionary(
-        //    combo => combo.Key,
-        //    combo => (double)combo.Value / totalCombinations
-        //);
     }
 
-    public int CalculateCombinations(int targetValue)
-    {
-        var totalCombinations = 0;
-        // loop each die
-        var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        var currentTotal = 0;
-        var cFace = 1;
-        //for (int f = 1; f <= faces; f++)
-        //{
-        while (currentTotal < totalCombinations)
-        {
-            for (int i = numberOfDice; i >= 0; i--)
-            {
-                dice[i] += 1;
-
-            }
-        }
-            
-
-        if (currentTotal == targetValue)
-        {
-            totalCombinations++;
-        }
-        //}
-        
-        return totalCombinations;
-    }
-
-    //public int RecurisveCalculation(int targetValue, int diceIndex, int runningTotal)
-    //{
-    //    // establish base case (no more dice left)
-    //    if (diceIndex == 0)
-    //    {
-    //        return runningTotal; // Return the current accumulated total of combinations
-    //    }
-
-        
-
-    //}
 
 }
+
+

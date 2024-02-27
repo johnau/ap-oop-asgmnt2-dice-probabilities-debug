@@ -1,4 +1,6 @@
-﻿namespace DiceProbabilitiesDebug;
+﻿using System.Diagnostics;
+
+namespace DiceProbabilitiesDebug;
 
 public class DiceProbabilities_Stage2_E(int numberOfDice, int faces = 6) // This constructor style is weird for a full class
 {
@@ -9,7 +11,7 @@ public class DiceProbabilities_Stage2_E(int numberOfDice, int faces = 6) // This
     public virtual Dictionary<int, double> CalculateProbabilitiesForNumberOfDice()
     {
         var dice = Enumerable.Repeat(1, numberOfDice).ToArray();
-        var combinations = Enumerable.Range(numberOfDice, numberOfDice * 6 - numberOfDice + 1).ToDictionary(key => key, value => 0);
+        var combinations = Enumerable.Range(numberOfDice, numberOfDice * faces - numberOfDice + 1).ToDictionary(key => key, value => 0);
 
         combinations[numberOfDice] = 1; // set initial value to 1, could also set maxValue to 1 and flip the contents of the while loop?
         var total = numberOfDice;
@@ -31,17 +33,12 @@ public class DiceProbabilities_Stage2_E(int numberOfDice, int faces = 6) // This
             combinations[total]++;
         }
 
-        return combinations.ToDictionary(
+        var probabilities = combinations.ToDictionary(
             combo => combo.Key, 
             combo => (double) combo.Value / totalCombinations
         );
 
-        //var probabilities = new Dictionary<int, double>();
-        //for (int i = numberOfDice; i <= numberOfDice * faces; i++)
-        //{
-        //    probabilities[i] = (Double)combinations[i] / totalCombinations;
-        //}
-        //return probabilities;
+        return probabilities;
     }
 
 }
