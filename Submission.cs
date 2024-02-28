@@ -17,6 +17,7 @@
         {
             var dice = Enumerable.Repeat(1, _diceCount).ToArray();
             var combinations = Enumerable.Range(_diceCount, _diceCount * _faces - _diceCount + 1).ToDictionary(key => key, value => 0);
+            RcLog.SetHeaders(combinations.Keys.Select(k => k.ToString()).ToArray());
 
             combinations[_diceCount] = 1;
             var total = _diceCount;
