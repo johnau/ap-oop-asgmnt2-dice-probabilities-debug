@@ -99,8 +99,7 @@ static void Check(string name, int diceCount, Dictionary<int, double> orignal, D
         return;
     }
 
-    ConsoleOut("Original");
-    ConsoleOut($"Original  |  Refactored");
+    ConsoleOut("Original  |  Refactored");
     for (int i = diceCount; i < orignal.Count + diceCount; i++)
     {
         var o = orignal[i];
