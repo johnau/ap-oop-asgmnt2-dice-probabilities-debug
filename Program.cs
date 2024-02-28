@@ -7,7 +7,6 @@ int maxDice = 4;
 int faceCount = 6;
 RunAll(maxDice, faceCount);
 
-#region Debugging process methods
 // Run all refactored and alternate solutions (use bool's to turn stages on and off)
 static void RunAll(int maxDice, int faceCount)
 {
@@ -28,7 +27,7 @@ static void RunAll(int maxDice, int faceCount)
     bool runStage2_B = false;
     bool runStage2_C = false;
     bool runStage2_D = false;
-    bool runStage2_E = false;
+    bool runStage2_E = true;
     #endregion
 
     #region Alternate solutions
@@ -37,11 +36,15 @@ static void RunAll(int maxDice, int faceCount)
     // Recursion+Memoization and Iteration
     // Note: Trying to time with C# Stop watch but results are too varied, might need to run 10000 times to get a nice average. 
     // Stage 2_E is consistently the fastest - which is the refactored code
-    // Stage 3_A and 3_B move into a dynamic programming approach
+    // Stage 3_A and 3_B try different approach
     //
     //
-    bool runStage3_A = true; // Dynamic programming approach, Top-Down with Memoization and Recursion (Very slow! 400x slower than iteration, function call overheads?)
-    bool runStage3_B = true; // Dynamic programming approach, Bottom-up with Iteration - Minor rounding issue for the highest probability using this method due to the accumulation of probabilities(double)
+    bool runStage3_A = true; // Dynamic programming approach, Bottom-up with Iteration - Minor rounding issue for the highest probability using this method due to the accumulation of probabilities(double)
+    bool runStage3_B = true; // Dynamic programming approach, Top-Down with Memoization and Recursion (Very slow! 400x slower than iteration, function call overheads?)
+    #endregion
+
+    #region Submission solution
+    bool runSubmission = true;
     #endregion
 
     #region Run stages that are turned on
@@ -53,12 +56,11 @@ static void RunAll(int maxDice, int faceCount)
     if (runStage2_C) RunStage("Stage 2_C", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2_C(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage2_D) RunStage("Stage 2_D", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2_D(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage2_E) RunStage("Stage 2_E", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2_E(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
-    UserContinue();
+    if (runStage1 || runStage2 || runStage2_A || runStage2_B || runStage2_C || runStage2_D || runStage2_E) UserContinue("End of Stage 2 Refactor Outputs...");
     if (runStage3_A) RunStage("Stage 3_A", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage3_A(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
-    UserContinue();
     if (runStage3_B) RunStage("Stage 3_B", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage3_B(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
-    UserContinue();
-
+    if (runStage3_A || runStage3_B) UserContinue("End of Stage 3 Reimplementation Outputs...");
+    if (runSubmission) RunStage("Submission", maxDice, faceCount, (int diceCount, int faces) => new Submission(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     #endregion
 
     PrintTimings(timings);
@@ -86,12 +88,15 @@ static void RunStage(string name, int maxDice, int faces, Func<int, int, Diction
     ConsoleOut("\nCompleted successfully!", ConsoleColor.Cyan, ConsoleColor.DarkBlue);
 }
 
+#region Helper Functions
+
 // Method to compare results (used to compare original to refactored versions)
 static void Check(string name, int diceCount, Dictionary<int, double> orignal, Dictionary<int, double> checking)
 {
     if (orignal.SequenceEqual(checking))
     {
         ConsoleOut($">> Results Equal!  Result from orginal method and refactored method are equal for {diceCount} {(diceCount == 1 ? "die" : "dice")}", ConsoleColor.Green);
+        return;
     }
 
     ConsoleOut("Original");
@@ -100,17 +105,18 @@ static void Check(string name, int diceCount, Dictionary<int, double> orignal, D
     {
         var o = orignal[i];
         var r = checking[i];
-        if (o != r) Console.ForegroundColor = ConsoleColor.Red;
-        ConsoleOut($"{orignal[i]} ?= {checking[i]}");
-        Console.ResetColor();
+        var text = $"{orignal[i]}\t?=\t{checking[i]}";
+        if (o == r) ConsoleOut(text, ConsoleColor.Green);
+        else ConsoleOut(text, ConsoleColor.Red);
         
-        if (o == r) continue;
-         
-        var rounding = 15;
-        if (Math.Round(o, rounding) == Math.Round(r, rounding))
-            ConsoleOut($"Ok when rounded to {rounding} digits", ConsoleColor.Green);
-        else
-            throw new Exception($"{name}: Something wrong ({diceCount} dice)");
+        if (o != r)
+        {
+            var rounding = 15;
+            if (Math.Round(o, rounding) == Math.Round(r, rounding))
+                ConsoleOut($"Ok when rounded to {rounding} digits - Should have used ints", ConsoleColor.Blue);
+            else
+                throw new Exception($"{name}: Something wrong ({diceCount} dice)");
+        }
     }
 }
 
@@ -129,7 +135,6 @@ static void PrintProbabilities(int diceCount, int faces, Dictionary<int, double>
 static void PrintTimings(Dictionary<(string, int), TimeSpan> timings)
 {
     timings = timings.OrderBy(x => x.Key.Item2)
-                             //.ThenBy(x => x.Key.Item1)
                              .ThenBy(x => x.Value)
                              .ToDictionary(x => x.Key, x => x.Value);
     foreach (var timing in timings)
@@ -169,8 +174,9 @@ static TimeSpan StopTimer(Stopwatch stopwatch, int numberOfDice = -1)
     return timeTaken;
 }
 
-static void UserContinue()
+static void UserContinue(string message = "")
 {
+    if (message != string.Empty) Console.WriteLine(message);
     Console.WriteLine("Press any key to continue...");
     Console.ReadKey(true);
 }
