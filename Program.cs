@@ -57,11 +57,16 @@ static void RunAll(int maxDice, int faceCount)
     if (runStage2_D) RunStage("Stage 2_D", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2_D(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage2_E) RunStage("Stage 2_E", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2_E(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage1 || runStage2 || runStage2_A || runStage2_B || runStage2_C || runStage2_D || runStage2_E) UserContinue("End of Stage 2 Refactor Outputs...");
+
     if (runStage3_A) RunStage("Stage 3_A", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage3_A(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage3_B) RunStage("Stage 3_B", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage3_B(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage3_A || runStage3_B) UserContinue("End of Stage 3 Reimplementation Outputs...");
 
-    if (runSubmission) RunStage("Submission", maxDice, faceCount, (int diceCount, int faces) => new Submission(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
+    if (runSubmission)
+    {
+        RunStage("Submission", maxDice, faceCount, (int diceCount, int faces) => new Submission(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
+        UserContinue("End of Submission Output...");
+    }
     #endregion
 
     PrintTimings(timings);
