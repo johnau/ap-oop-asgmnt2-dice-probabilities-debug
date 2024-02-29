@@ -2,8 +2,10 @@
 
 /// <summary>
 /// Stage 3A - Incorporating the dice and combinations populating arrays
-/// This has ended up looking very inefficient based on the output => a lot of unneccessary processing (0 dice, 0 target value)
+/// This has ended up looking very inefficient based on the output => seems to be unneccessary processing
 /// Need to dig a little deeper, but not sure if it is worth it, the other solutions are OK.
+///
+/// - Subtracting probabilities is causing rounding errors, need to switch to using integers and then add the decimal place
 /// 
 /// </summary>
 /// <param name="numberOfDice"></param>

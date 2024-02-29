@@ -27,7 +27,7 @@ static void RunAll(int maxDice, int faceCount)
     bool runStage2_B = false;
     bool runStage2_C = false;
     bool runStage2_D = false;
-    bool runStage2_E = true;
+    bool runStage2_E = false; // class Stage2_E = class Submission (duplicated and renamed for clarity)
     #endregion
 
     #region Alternate solutions
@@ -39,16 +39,16 @@ static void RunAll(int maxDice, int faceCount)
     // Stage 3_A and 3_B try different approach
     //
     //
-    bool runStage3_A = true; // Dynamic programming approach, Bottom-up with Iteration - Minor rounding issue for the highest probability using this method due to the accumulation of probabilities(double)
-    bool runStage3_B = true; // Dynamic programming approach, Top-Down with Memoization and Recursion (Very slow! 400x slower than iteration, function call overheads?)
+    bool runStage3_A = false; // Dynamic programming approach, Bottom-up with Iteration - Minor rounding issue for the highest probability using this method due to the accumulation of probabilities(double)
+    bool runStage3_B = false; // Dynamic programming approach, Top-Down with Memoization and Recursion (Very slow! 400x slower than iteration, function call overheads?)
     #endregion
 
     #region Submission solution
+
     bool runSubmission = true;
     #endregion
 
-    #region Run stages that are turned on
-
+    #region Run stages that are enabled above
     if (runStage1) RunStage("Stage 1", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage1(diceCount).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage2) RunStage("Stage 2", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage2_A) RunStage("Stage 2_A", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage2_A(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
@@ -60,6 +60,7 @@ static void RunAll(int maxDice, int faceCount)
     if (runStage3_A) RunStage("Stage 3_A", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage3_A(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage3_B) RunStage("Stage 3_B", maxDice, faceCount, (int diceCount, int faces) => new DiceProbabilities_Stage3_B(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     if (runStage3_A || runStage3_B) UserContinue("End of Stage 3 Reimplementation Outputs...");
+
     if (runSubmission) RunStage("Submission", maxDice, faceCount, (int diceCount, int faces) => new Submission(diceCount, faces).CalculateProbabilitiesForNumberOfDice(), timings);
     #endregion
 
@@ -69,7 +70,8 @@ static void RunAll(int maxDice, int faceCount)
 // Run the original code and refactored code,
 // For 1 to `maxDice` number of dice,
 // - Measure processing time, and
-// - Compare and print results
+// - Compare results to original code output
+// - Print results
 static void RunStage(string name, int maxDice, int faces, Func<int, int, Dictionary<int, double>> probabilitiesFunction, Dictionary<(string, int), TimeSpan> timings)
 {
     for (int i = 1; i <= maxDice; i++)
